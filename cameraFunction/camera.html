@@ -2,7 +2,6 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
   <title>Serverless Demo Cam</title>
   <link rel="shortcut icon" href="http://simpleicon.com/wp-content/uploads/camera.png" type="image/x-icon">
   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
@@ -42,11 +41,14 @@
     <span id="msg">&nbsp;</span>
   </div>
 
-  <img src="" alt="" id="img">
+  <img src="" id="img">
 </html>
 
 <script>
+  // Config here
   const POST_ENDPOINT = "/api/cameraFunction";
+  const MAX_SIZE = 3000;
+  const JPEG_QUAL = 0.9;
   //const POST_ENDPOINT = "https://functions-app-demo.azurewebsites.net/api/cameraFunction";
 
   $('#file').on('change', function (e) {
@@ -54,22 +56,50 @@
 
     if (file) {
       if (/^image\//i.test(file.type)) {
-        readFile(file);
+        processFile(file);
       } else {
         alert('Not a valid image!');
       }
     }
   });
   
-  function readFile(file) {
+  function processFile(file) {
+
     $("#msg").html('Uploading please wait...');
+
+    // Load the image
     var reader = new FileReader();
+    reader.onload = function (readerEvent) {
+      var image = new Image();
+      image.onload = function (imageEvent) {
 
-    reader.onloadend = function () {
-      $('#img').attr('src', reader.result);
+        // Resize the image
+        var canvas = document.createElement('canvas')
+        var width = image.width
+        var height = image.height
+        if (width > height) {
+            if (width > MAX_SIZE) {
+                height *= MAX_SIZE / width;
+                width = MAX_SIZE;
+            }
+        } else {
+            if (height > MAX_SIZE) {
+                width *= MAX_SIZE / height;
+                height = MAX_SIZE;
+            }
+        }
+        // Draw resized into canvas
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+        var dataUrl = canvas.toDataURL('image/jpeg', JPEG_QUAL);
 
-      var imgData = reader.result.split(',')[1];
-      $.ajax({
+        // Display on page (with real img element)
+        $('#img').attr('src', dataUrl);
+
+        // Now HTTP POST to endpoint
+        var imgData = dataUrl.split(',')[1];
+        $.ajax({
           url: POST_ENDPOINT,
           type: "POST",
           data: imgData,
@@ -78,16 +108,13 @@
           success: function () {
             $("#msg").html('Photo uploaded to Azure Functions!');
             $("#msg").show().delay(4000).fadeOut();
-            //$("#img").show().delay(4000).fadeOut();
           },
           error: function (xhr, status, error) {
             $("#msg").html(status+' '+error);
           }
-      });      
-    }
-
-    reader.onerror = function () {
-      $("#msg").html('There was an error reading the file!');
+        }); 
+      }
+      image.src = readerEvent.target.result;
     }
 
     reader.readAsDataURL(file);
