@@ -10,11 +10,11 @@ The demo consists of four main parts:
 - Viewer web app
 
 # Architecture
-![diagram of architecture](https://user-images.githubusercontent.com/14982936/41406894-aa6c57cc-6fc5-11e8-86fc-502aa94c1503.png)
+![diagram of architecture](diagram.png)
 
 ## Application Flow 
 
-0. User loads camera app on mobile device, from Azure Function (via a public URL) and takes photo
+0. User loads camera web app on mobile device, from Azure Function (via a public URL) and takes photo
 1. Image is HTTP POSTed from camera app as Base64 string back to same Azure Function
 2. Azure Function decodes Base64 data and stores resulting image in Blob Storage into *photo-in* container
 3. Second Azure Function is triggered on a new blob arriving at *photo-in* 
@@ -22,6 +22,8 @@ The demo consists of four main parts:
 5. Result is stored in *photo-out* container in Blob Storage
 6. Static HTML5 viewing page polls *photo-out* for new images and updates page dynamically
 
+## Example (Viewer Results)
+![demo](demo.png)
 
 # Deployment & Setup
 The demo requires a single Function App, storage account and Cognitive Services account. Using a consumption plan for the Function means the costs for leaving the demo in place are almost nothing.
@@ -30,7 +32,7 @@ The demo requires a single Function App, storage account and Cognitive Services 
   - Pick Windows as the OS.
   - If you have an existing App Service Plan you can use, then select that as the Hosting Plan, otherwise pick "Consumption Plan"
   - Turn off Application Insights
-  - Create a new storage account
+  - Create a new storage account, and make a note of the name
 - Add a Computer Vision account (New ➔ AI + Machine Learning ➔ Computer Vision)
   - You **must pick West Europe as the location**, and also F0 (free) as the pricing tier
   - Place in same resource group used for the Function App
@@ -46,8 +48,25 @@ The demo requires a single Function App, storage account and Cognitive Services 
   - Click "+ Add new setting"
   - Call the setting **VISION_API_KEY** and paste the key you copied previously as the value
   - Remember to click "Save"
-- Configure the blob containers for the photos 
-
+- To configure blob storage, return to the resource group and click into the storage account that was created with the Function App
+  - Click on "Blob Service / Containers"
+  - Click "+ Container", call it **photo-in** and **set the access level to 'Blob'**
+  - Click "+ Container", call it **photo-out** and **set the access level to 'Container'**
+  - Click on "Blob Service / CORS", and click "+ Add"
+    - Set the rule with '*' (no quotes) for allowed origins, allowed headers and exposed headers, select GET as the allowed verb and leave the max age as 0
 
 # Usage
-Blah
+- Open the camera web app on your phone using the URL you got earlier. The browser will prompt you for camera access. Tapping the image will go full screen
+- You must hold your phone in landscape orientation 
+- Tap the camera icon to take photo and upload to Azure triggering the whole flow described above 
+- Open the viewer page:
+  - If you have cloned or downloaded this repo, just open `viewer/index.html` locally in your browser
+  - The viewer is currently hosted at **http://hub.benco.io/serverless-cognitive/viewer/**
+  - **You must append ?sa={storage-account-name} to the URL**, to point the viewer at your storage account
+- Note. The viewer automatically fetches new photos every 10 seconds and displays them, so **do not reload or refresh the page**
+
+
+# Viewer
+If you want to host the viewer yourself in Azure, you can:
+- Upload the viewer folder of this repo to blob storage give the container anonymous access and load the pages using the blob endpoint URL, e.g. https://mystoreaccount.blob.core.windows.net/viewer/index.html
+- Create an Azure App Service web app and upload the contents of the viewer folder to the root of your web app

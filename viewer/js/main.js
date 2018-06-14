@@ -2,14 +2,21 @@
 // Main module
 //
 
+// Moved from static config to URL query param
+var urlString = window.location.href
+var url = new URL(urlString);
+var STORAGE_ACCOUNT = url.searchParams.get("sa");
+if(!STORAGE_ACCOUNT) $("#photos").append( "<h2>ERROR! Please provide storage account name as query parameter 'sa', e.g. ?sa=foobar</h2>" );
+
 // Client to access Azure blob storage 
-var blobService = AzureStorage.createBlobService(STORAGE_ACCOUNT, STORAGE_KEY);
+// Anonymous access whoo yay!
+var blobService = AzureStorage.createBlobServiceAnonymous('https://' + STORAGE_ACCOUNT + '.blob.core.windows.net/');
 
 // Global array holds list of photos 
 var photos = [];
 
 //
-// Fetch photos from blob storages and push into page
+// Fetch photos from blob storage and push into page
 //
 function listPhotos() {
   $('#loader').css('visibility', 'visible');
