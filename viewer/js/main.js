@@ -19,6 +19,7 @@ var photos = [];
 // Fetch photos from blob storage and push into page
 //
 function listPhotos() {
+  if(!STORAGE_ACCOUNT) return;
   $('#loader').css('visibility', 'visible');
 
   // List blobs in container
