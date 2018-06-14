@@ -9,8 +9,10 @@ The demo consists of four main parts:
 - Computer Vision Cognitive Service
 - Viewer web app
 
+
 # Architecture
 ![diagram of architecture](diagram.png)
+
 
 ## Application Flow 
 
@@ -22,8 +24,10 @@ The demo consists of four main parts:
 5. Result is stored in *photo-out* container in Blob Storage
 6. Static HTML5 viewing page polls *photo-out* for new images and updates page dynamically
 
+
 ## Example (Viewer Results)
 ![demo](demo.png)
+
 
 # Deployment & Setup
 The demo requires a single Function App, storage account and Cognitive Services account. Using a consumption plan for the Function means the costs for leaving the demo in place are almost nothing.
@@ -55,14 +59,15 @@ The demo requires a single Function App, storage account and Cognitive Services 
   - Click on "Blob Service / CORS", and click "+ Add"
     - Set the rule with '*' (no quotes) for allowed origins, allowed headers and exposed headers, select GET as the allowed verb and leave the max age as 0
 
+
 # Usage
 - Open the camera web app on your phone using the URL you got earlier. The browser will prompt you for camera access. Tapping the image will go full screen
 - You must hold your phone in landscape orientation 
 - Tap the camera icon to take photo and upload to Azure triggering the whole flow described above 
 - Open the viewer page:
   - If you have cloned or downloaded this repo, just open `viewer/index.html` locally in your browser
-  - The viewer is currently hosted at **http://hub.benco.io/serverless-cognitive/viewer/**
-  - **You must append ?sa={storage-account-name} to the URL**, to point the viewer at your storage account
+  - The viewer is currently hosted on GitHub at [**http://hub.benco.io/serverless-cognitive/viewer**](http://hub.benco.io/serverless-cognitive/viewer)
+  - **You must append ?sa={storage-account-name} to the URL**, to point the viewer at your storage account, e.g. `http://hub.benco.io/serverless-cognitive/viewer?sa=mystoreaccount`
 - Note. The viewer automatically fetches new photos every 10 seconds and displays them, so **do not reload or refresh the page**
 
 
