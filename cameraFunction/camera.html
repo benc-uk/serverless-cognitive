@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Serverless Camera</title>
+  <title>Serverless Demo Cam</title>
+  <link rel="shortcut icon" href="http://simpleicon.com/wp-content/uploads/camera.png" type="image/x-icon">
   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <style>
     body, html { background-color: #333; height: 100%; min-height: 100%; padding: 0; margin: 0; 
@@ -35,7 +35,7 @@
   </style>
 
   <div class="center" id="buttonDiv">
-    <input type="file" name="file" id="file" class="inputfile" accept="image/*"/>
+    <input type="file" name="file" id="file" class="inputfile" accept="image/*" capture/>
     <label for="file">&#x1F4F7; Take A Photo</label>
   </div>
   <div class="center">
@@ -47,7 +47,7 @@
 
 <script>
   const POST_ENDPOINT = "/api/cameraFunction";
-  //const POST_ENDPOINT = "https://functions-app-demo.azurewebsites.net/api/cameraFunction";// "/api/cameraFunction";
+  //const POST_ENDPOINT = "https://functions-app-demo.azurewebsites.net/api/cameraFunction";
 
   $('#file').on('change', function (e) {
     var file = e.target.files[0];

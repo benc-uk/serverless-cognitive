@@ -65,8 +65,8 @@ The demo requires a single Function App, storage account and Cognitive Services 
 - You must hold your phone in landscape orientation 
 - Tap the camera icon to take photo and upload to Azure triggering the whole flow described above 
 - Open the viewer page:
-  - If you have cloned or downloaded this repo, just open `viewer/index.html` locally in your browser
-  - The viewer is currently hosted on GitHub at [**http://hub.benco.io/serverless-cognitive/viewer**](http://hub.benco.io/serverless-cognitive/viewer)
+  - If you have cloned or downloaded the [source repo](https://github.com/benc-uk/serverless-cognitive), just open `viewer/index.html` locally in your browser
+  - The viewer is currently [hosted on GitHub pages here](http://hub.benco.io/serverless-cognitive/viewer)
   - **You must append ?sa={storage-account-name} to the URL**, to point the viewer at your storage account, e.g. `http://hub.benco.io/serverless-cognitive/viewer?sa=mystoreaccount`
 - Note. The viewer automatically fetches new photos every 10 seconds and displays them, so **do not reload or refresh the page**
 
