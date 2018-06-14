@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <title>Azure Functions Camera</title>
+   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.min.js"></script>
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+   <style>
+   body, html { background-color: #333; height: 100%; min-height: 100%; padding: 0; margin: 0}
+   video {
+      object-fit: contain !important;
+      width: 100% !important;
+      height: 100%; min-height: 100% !important;
+   }
+   button {
+      width: 10vw; height: 10vw;
+      position: absolute;
+      bottom: 2vh; right: 2vw;
+      z-index: 200;
+   }
+   button img {
+      width: 6vw;
+   }
+   .msg {
+      background-color: #222; color: rgb(0,120,215);
+      font-size: 20px; font-family: "Trebuchet MS";
+      text-align: center; line-height: 80px;
+      height: 80px; width: 300px;
+      margin: auto; position: fixed; display: none;
+      top: 0; right: 0; bottom: 0; left: 0;
+   }
+   </style>
+</head>
+
+<body>
+   <!-- This is the whole page, just three elements -->
+   <video id="video" autoplay></video>
+   <button onclick="takePhoto()"><img src="https://image.flaticon.com/icons/png/128/3/3901.png"/></button>
+   <div class="msg">...</div>
+
+   <script>
+      // allow switching to fullscreen
+      $('video').click(function() {
+        if(!screenfull.isFullscreen) screenfull.request();
+      });
+
+      var video = document.getElementById('video');
+      var videoDevice;
+      var captureDevice;
+      const POST_ENDPOINT = "/api/cameraFunction";
+      const BUTTON_IMG = "https://image.flaticon.com/icons/png/128/3/3901.png";
+      const SPIN_IMG = "https://www.wallies.com/filebin/images/loading_apple.gif";
+
+      // Put video listeners into place
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+         navigator.mediaDevices.getUserMedia({ video: true, video: { facingMode: "environment" } }).then(function (stream) {
+            video.srcObject = stream;
+            video.play();
+            gotMedia(stream);
+         });
+      }
+
+      // Call ImageCapture to get captureDevice
+      function gotMedia(mediaStream) {
+         videoDevice = mediaStream.getVideoTracks()[0];
+         captureDevice = new ImageCapture(videoDevice);
+      }
+
+      // Process and upload photo 
+      function processPhoto(blob) {
+        //console.log(blob);
+        var dataURI;
+        var reader = new FileReader();
+        reader.onload = function() {
+          dataURI = this.result;
+          var img = dataURI.split(',')[1];
+          $.ajax({
+              url: POST_ENDPOINT,
+              type: "POST",
+              data: img,
+              contentType: "application/octet-stream;base64",
+              // If good or bad, display message
+              success: function () {
+                  $(".msg").html('Photo uploaded to Azure!')
+                  $(".msg").show().delay(1000).fadeOut();
+                  $("button img").attr('src', BUTTON_IMG);
+              },
+              error: function (xhr, status, error) {
+                $(".msg").html(status+' '+error)
+                $(".msg").show().delay(4000).fadeOut();
+                $("button img").attr('src', BUTTON_IMG);
+              }
+          }); 
+        };
+
+        // Start the magic
+        reader.readAsDataURL(blob);
+      }
+
+      // Only used in error 
+      function stopCamera(error) {
+         console.error(error);
+         if (videoDevice) videoDevice.stop();  // turn off the camera
+      }
+
+      // Trigger taking photo
+      function takePhoto() {
+        if($('button img').attr('src') == SPIN_IMG) return;
+        $('button img').attr('src', SPIN_IMG);
+       
+        captureDevice.takePhoto()
+        .then(processPhoto)
+        .catch(err => {
+          $("button img").attr('src', BUTTON_IMG);
+          $(".msg").html("ERROR: "+err.message);
+          $(".msg").show().delay(4000).fadeOut();
+          console.log(err);
+        });
+      }
+   </script>
+</body>
+
+</html>

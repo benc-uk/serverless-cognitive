@@ -2,118 +2,94 @@
 <html>
 
 <head>
-   <meta charset="UTF-8">
-   <title>Azure Functions Camera</title>
-   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.min.js"></script>
-   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-   <style>
-   body, html { background-color: #333; height: 100%; min-height: 100%; padding: 0; margin: 0}
-   video {
-      object-fit: contain !important;
-      width: 100% !important;
-      height: 100%; min-height: 100% !important;
-   }
-   button {
-      width: 10vw; height: 10vw;
-      position: absolute;
-      bottom: 2vh; right: 2vw;
-      z-index: 200;
-   }
-   button img {
-      width: 6vw;
-   }
-   .msg {
-      background-color: #222; color: rgb(0,120,215);
-      font-size: 20px; font-family: "Trebuchet MS";
-      text-align: center; line-height: 80px;
-      height: 80px; width: 300px;
-      margin: auto; position: fixed; display: none;
-      top: 0; right: 0; bottom: 0; left: 0;
-   }
-   </style>
-</head>
+  <meta charset="UTF-8">
+  <title>Serverless Camera</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/3.3.2/screenfull.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <style>
+    body, html { background-color: #333; height: 100%; min-height: 100%; padding: 0; margin: 0; 
+      font-family: 'Trebuchet MS', Arial, sans-serif }
+    .inputfile {
+      width: 0.1px; height: 0.1px;
+      opacity: 0; overflow: hidden; position: absolute;
+      z-index: -1;
+    }
+    .inputfile + label {
+      font-size: 2em; cursor: pointer; font-weight: 700;
+      color: #999; background-color: #111;
+      display: inline-block;padding: 15px;
+      border: 3px solid #777;
+    }
+    .inputfile:focus + label,
+    .inputfile + label:hover {
+        background-color: #222; color: #bbb
+    }
+    #img {
+      width: 100%;
+    }
+    #msg {
+      font-size: 1.5em; color: rgb(68, 152, 231);
+    }
+    .center { text-align: center; padding-top: 10px; padding-bottom: 10px; }
+  </style>
 
-<body>
-   <!-- This is the whole page, just three elements -->
-   <video id="video" autoplay></video>
-   <button onclick="takePhoto()"><img src="https://image.flaticon.com/icons/png/128/3/3901.png"/></button>
-   <div class="msg">...</div>
+  <div class="center" id="buttonDiv">
+    <input type="file" name="file" id="file" class="inputfile" accept="image/*"/>
+    <label for="file">&#x1F4F7; Take A Photo</label>
+  </div>
+  <div class="center">
+    <span id="msg">&nbsp;</span>
+  </div>
 
-   <script>
-      // allow switching to fullscreen
-      $('video').click(function() {
-        if(!screenfull.isFullscreen) screenfull.request();
-      });
-
-      var video = document.getElementById('video');
-      var videoDevice;
-      var captureDevice;
-      const POST_ENDPOINT = "/api/cameraFunction";
-      const BUTTON_IMG = "https://image.flaticon.com/icons/png/128/3/3901.png";
-      const SPIN_IMG = "https://www.wallies.com/filebin/images/loading_apple.gif";
-
-      // Put video listeners into place
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-         navigator.mediaDevices.getUserMedia({ video: true, video: { facingMode: "environment" } }).then(function (stream) {
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-            gotMedia(stream);
-         });
-      }
-
-      // Call ImageCapture to get captureDevice
-      function gotMedia(mediaStream) {
-         videoDevice = mediaStream.getVideoTracks()[0];
-         captureDevice = new ImageCapture(videoDevice);
-      }
-
-      // Process and upload photo 
-      function processPhoto(blob) {
-         var dataURI;
-         var reader = new FileReader();
-         reader.onload = function() {
-            dataURI = this.result;
-            var img = dataURI.split(',')[1];
-            $.ajax({
-               url: POST_ENDPOINT,
-               type: "POST",
-               data: img,
-               contentType: "application/octet-stream;base64",
-               // If good or bad, display message
-               success: function () {
-                   $(".msg").html('Photo uploaded to Azure!')
-                   $(".msg").show().delay(1000).fadeOut();
-                   $("button img").attr('src', BUTTON_IMG);
-               },
-               error: function (xhr, status, error) {
-                  $(".msg").html(status+' '+error)
-                  $(".msg").show().delay(4000).fadeOut();
-                  $("button img").attr('src', BUTTON_IMG);
-               }
-            }); 
-         };
-
-         // Start the magic
-         reader.readAsDataURL(blob);
-      }
-
-      // Only used in error 
-      function stopCamera(error) {
-         console.error(error);
-         if (videoDevice) videoDevice.stop();  // turn off the camera
-      }
-
-      // Trigger taking photo
-      function takePhoto() {
-         if($('button img').attr('src') == SPIN_IMG) return;
-         $('button img').attr('src', SPIN_IMG);
-
-         captureDevice.takePhoto()
-         .then(processPhoto)
-         .catch(stopCamera);
-      }
-   </script>
-</body>
-
+  <img src="" alt="" id="img">
 </html>
+
+<script>
+  const POST_ENDPOINT = "/api/cameraFunction";
+  //const POST_ENDPOINT = "https://functions-app-demo.azurewebsites.net/api/cameraFunction";// "/api/cameraFunction";
+
+  $('#file').on('change', function (e) {
+    var file = e.target.files[0];
+
+    if (file) {
+      if (/^image\//i.test(file.type)) {
+        readFile(file);
+      } else {
+        alert('Not a valid image!');
+      }
+    }
+  });
+  
+  function readFile(file) {
+    $("#msg").html('Uploading please wait...');
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      $('#img').attr('src', reader.result);
+
+      var imgData = reader.result.split(',')[1];
+      $.ajax({
+          url: POST_ENDPOINT,
+          type: "POST",
+          data: imgData,
+          contentType: "application/octet-stream;base64",
+          // If good or bad, display message
+          success: function () {
+            $("#msg").html('Photo uploaded to Azure Functions!');
+            $("#msg").show().delay(4000).fadeOut();
+            //$("#img").show().delay(4000).fadeOut();
+          },
+          error: function (xhr, status, error) {
+            $("#msg").html(status+' '+error);
+          }
+      });      
+    }
+
+    reader.onerror = function () {
+      $("#msg").html('There was an error reading the file!');
+    }
+
+    reader.readAsDataURL(file);
+  }
+</script>
