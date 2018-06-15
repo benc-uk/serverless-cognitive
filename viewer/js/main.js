@@ -6,7 +6,14 @@
 var urlString = window.location.href
 var url = new URL(urlString);
 var STORAGE_ACCOUNT = url.searchParams.get("sa");
-if(!STORAGE_ACCOUNT) $("#photos").append( "<h2>ERROR! Please provide storage account name as query parameter 'sa', e.g. ?sa=foobar</h2>" );
+
+if(!STORAGE_ACCOUNT) {
+  $('#loader').css('visibility', 'hidden');
+  //$("#photos").append( "<h2>ERROR! Please provide storage account name as query parameter 'sa', e.g. ?sa=foobar</h2>" );
+} else {
+  $('#settings').hide();
+}
+
 
 // Client to access Azure blob storage 
 // Anonymous access whoo yay!
@@ -41,4 +48,12 @@ function listPhotos() {
       $('#loader').css('visibility', 'hidden');
     }
   });
+}
+
+// Set the storage account (sa) on the URL query string
+function setSA() {
+  let sa = $('#sa').val();
+  var searchParams = new URLSearchParams(window.location.search);
+  searchParams.append("sa", sa);
+  window.location.search = searchParams;
 }

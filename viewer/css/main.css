@@ -44,3 +44,17 @@ h1 {
     transform: scale(1);
   }
 }
+
+#settings { 
+  margin: 20px;
+  font-size: 20px;
+}
+input {
+
+}
+button {
+  border: 2px solid rgb(19, 94, 190);
+  background-color: rgb(75, 133, 241);
+  font-weight: 700;
+  color: white;
+}
