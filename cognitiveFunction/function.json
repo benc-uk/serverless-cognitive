@@ -1,4 +1,5 @@
 {
+  "disabled": false,
   "bindings": [
     {
       "name": "triggerBlob",
@@ -10,10 +11,10 @@
     {
       "type": "blob",
       "name": "outputBlob",
-      "path": "photo-out/{DateTime}.jpg",
+      "path": "photo-out/{DateTime}.json",
       "connection": "AzureWebJobsStorage",
-      "direction": "out"
+      "direction": "out",
+      "dataType": "string"
     }
-  ],
-  "disabled": false
+  ]
 }

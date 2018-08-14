@@ -1,23 +1,28 @@
 {
+  "disabled": false,
   "bindings": [
     {
-      "authLevel": "anonymous",
-      "name": "req",
+      "authLevel": "function",
       "type": "httpTrigger",
-      "direction": "in"
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get",
+        "post"
+      ]
     },
     {
       "type": "blob",
       "name": "outputBlob",
       "path": "photo-in/{DateTime}.jpg",
       "connection": "AzureWebJobsStorage",
-      "direction": "out"
+      "direction": "out",
+      "datatype": "binary"
     },
     {
       "type": "http",
-      "name": "$return",
-      "direction": "out"
+      "direction": "out",
+      "name": "res"
     }
-  ],
-  "disabled": false
+  ]
 }
