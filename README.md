@@ -26,7 +26,7 @@ The system consists of four main parts:
 Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
 ## Example (Viewer Results)
-![demo](demo.jpg)
+![demo](demo.png)
 
 
 # Deployment & Setup
