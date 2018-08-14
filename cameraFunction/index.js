@@ -15,7 +15,7 @@ module.exports = function (context, req) {
     context.log("### User requested camera app web page");
 
     // Look I told you this was a hack! I feel bad about this code now
-    var cameraHtml = fs.readFileSync('cameraFunction/camera.html').toString();
+    var cameraHtml = fs.readFileSync(__dirname+'/camera.html').toString();
     context.res.status = 200;
     context.res.headers['Content-Type'] = "text/html";
     context.res.body = cameraHtml;
