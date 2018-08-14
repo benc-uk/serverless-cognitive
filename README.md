@@ -1,7 +1,7 @@
 # Overview
 This guide will step you through deploying a multi part application which demonstrates using serverless compute with Azure Functions combined with the pre-built machine learning models of Cognitive Services 
 
-With this application users can take photos using their phone, these photos are analysed using computer vision. The results have a description of the image, people's faces and also a set of tags. The demo app updates the photo with information and the results are dynamically updated on a web page
+With this application users can take photos using their phone, these photos are analysed using computer vision. The results have a description of the image, people's faces and also a set of tags. The demo app stores this information and the results are dynamically updated & displayed on a web page
 
 The system consists of four main parts:
 - Camera web app
@@ -11,7 +11,7 @@ The system consists of four main parts:
 
 
 # Architecture
-![diagram of architecture](diagram.png)
+![diagram of architecture](diagram.png){: .framed}
 
 
 ## Application Flow 
@@ -26,7 +26,7 @@ The system consists of four main parts:
 Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
 ## Example (Viewer Results)
-![demo](demo.png)
+![demo](demo.png){: .framed}
 
 
 # Deployment & Setup
