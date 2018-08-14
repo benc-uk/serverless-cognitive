@@ -81,7 +81,7 @@ All these steps use the Azure Portal, and assume you already have an Azure subsc
 `https://{function-app-name}.azurewebsites.net/api/cameraFunction`
 - Tap the button & icon to take a photo (or pick existing photo on your device) and upload to Azure triggering the whole flow described above 
 - Open the viewer:
-  - The viewer is currently [**hosted publicly on GitHub pages**](http://hub.benco.io/serverless-cognitive/viewer)
+  - The viewer is currently [**hosted publicly on GitHub pages**](http://code.benco.io/serverless-cognitive/viewer)
   - If you have cloned or downloaded the [source repo](https://github.com/benc-uk/serverless-cognitive), just open `viewer/index.html` locally in your browser
   - You will need to point the viewer at your storage account, so enter your storage account name and click OK
 - Note. The viewer automatically fetches new photos every 10 seconds and displays them, so **do not reload or refresh the page**
