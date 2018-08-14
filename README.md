@@ -20,13 +20,13 @@ The system consists of four main parts:
 1. Image is HTTP POSTed from camera app as Base64 string back to same Azure Function
 2. Azure Function decodes Base64 data and stores resulting image in Blob Storage, into *photo-in* container
 3. Second Azure Function is triggered on a new blob arriving at *photo-in* 
-4. Function sends image to Cognitive Service API (REST call) and uses result to render a new JPEG image with details "drawn" over the photo
-5. Result is stored in *photo-out* container in Blob Storage
-6. Static HTML5 viewing page polls *photo-out* for new images and updates page dynamically
-
+4. Function sends image to Cognitive Service API (REST call) and gets the JSON result
+5. Result is stored in *photo-out* container as a blob of JSON
+6. Static HTML5 viewing page polls *photo-out* for new blobs and updates page dynamically by fetching and reading the JSON  
+Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
 ## Example (Viewer Results)
-![demo](demo.png)
+![demo](demo.jpg)
 
 
 # Deployment & Setup

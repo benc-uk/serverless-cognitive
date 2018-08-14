@@ -105,7 +105,7 @@ function drawOverlay(evt, result) {
     }
     ctx.shadowColor = "transparent";
     ctx.strokeRect(face.faceRectangle.left*scale, face.faceRectangle.top*scale, face.faceRectangle.width*scale, face.faceRectangle.height*scale);  
-    ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; ctx.shadowOffsetX = 3; ctx.shadowOffsetY = 3;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)"; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 2; ctx.shadowBlur = 2;
     ctx.fillText(`${face.gender} ${face.age}`, face.faceRectangle.left*scale-(10*scale), face.faceRectangle.top*scale-(10*scale) );
   }
 }
