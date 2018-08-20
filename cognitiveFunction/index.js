@@ -5,8 +5,8 @@
 //
 
 const VISION_API_KEY = process.env.VISION_API_KEY;
-const VISION_REGION = process.env.VISION_REGION || "westeurope"
-const VISION_API_ENDPOINT = `https://${VISION_REGION}.api.cognitive.microsoft.com/vision/v1.0/analyze`;
+const VISION_API_REGION = process.env.VISION_API_REGION || "westeurope"
+const VISION_API_ENDPOINT = `https://${VISION_API_REGION}.api.cognitive.microsoft.com/vision/v1.0/analyze`;
 const request = require('request');
 
 module.exports = function (context, blobTrigger) {
