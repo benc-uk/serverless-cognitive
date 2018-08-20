@@ -25,7 +25,7 @@ The system consists of four main parts:
 6. Static HTML5 viewing page polls *photo-out* for new blobs and updates page dynamically by fetching and reading the JSON  
 Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
-## Example (Viewer Results)
+## Example (Viewer Results Webapp)
 ![demo](demo.png){: .framed}
 
 
