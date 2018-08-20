@@ -7,14 +7,18 @@
   <link rel="shortcut icon" href="img/favicon.png" type="image/png" />
   <title>Azure Serverless &amp; Cognitive Demo</title>
   
+  <!-- 
+    Vue.js viewer client webapp
+    Ben Coleman, Aug 2018
+  -->
 
   <!-- Vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
   
-   <!-- Azure Storage library for JS -->
-   <script src="lib/azure-storage.common.js"></script>
-   <script src="lib/azure-storage.blob.js"></script>
+  <!-- Azure Storage library for JS -->
+  <script src="lib/azure-storage.common.js"></script>
+  <script src="lib/azure-storage.blob.js"></script>
 
   <!-- App CSS -->
   <link rel="stylesheet" href="css/main.css">
@@ -26,6 +30,7 @@
 
   <br/>
 
+  <!-- Root Vue app component -->
   <div id="app">
     <spinner v-if="updating"></spinner>
 
