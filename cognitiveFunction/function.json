@@ -11,7 +11,7 @@
     {
       "type": "blob",
       "name": "outputBlob",
-      "path": "photo-out/{DateTime}.json",
+      "path": "photo-out/{rand-guid}.json",
       "connection": "AzureWebJobsStorage",
       "direction": "out",
       "dataType": "string"

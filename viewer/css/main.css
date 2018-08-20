@@ -1,60 +1,123 @@
-.card {
-   box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.46), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-   -webkit-transition: .25s box-shadow;
-   transition: .25s box-shadow;
-   animation: 0.5s ease-out 0s 1 zoom;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0px;
+  margin: 0px;
+}
+
+.photo {
+  position: relative;
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid rgb(194, 194, 194);
+  border-radius: 4px;
+  box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.photo img {
+  width: 100%
+}
+
+.photo canvas {
+  z-index: 100;
+  position: absolute;
+}
+
+.photo a {
+  z-index: 200;
+  position: absolute;
+  right: 3vw;
+  bottom: 2vh;
+  font-size: 4vw;
+  padding: 5px 10px;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 4px;
+  border: 2px solid rgb(19, 94, 190);
+  line-height: 4vw;
+  cursor: pointer;
+}
+
+.infobox {
+  z-index: 300;
+  position: absolute;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 6px;
+  border: 3px solid rgb(19, 94, 190);
+  margin: 4vw;
+  padding-top: 0px;
+  padding: 2vw;
+  box-shadow: 10px 10px 31px 0px rgba(0,0,0,0.75);
+  height: 80%;
+  width: 80%;
+}
+.infobox pre {
+  font-size: 1.8vw;
+  height: 90%;
+  overflow: scroll;
+  background-color: #eee;
+}
+.infobox h2 {
+  margin: 0px;
+  padding: 0px;
+}
+
+.photolist-enter-active, .photolist-leave-active {
+  transition: all 1s;
+}
+.photolist-enter, .photolist-leave-to  {
+  opacity: 0;
+  transform: translateX(100%);
+} 
+.photolist-move {
+  transition: transform 1s;
 }
 
 .img-right {
   height: 6vw; 
   position: absolute; 
-  top: 0px;
+  top: 10px;
+  left: 20px;
 }
 
 .img-left {
   height: 6vw; 
   position: absolute; 
-  top: 0px; 
+  top: 10px; 
   right: 20px;
   width: 6.5vw; 
 }
 
-h1 {
+#title {
   text-align: center; 
   font-size: 3.8vw;
-  color: #505050
+  color: #505050;
+  padding: 0;
+  margin: 0;
 }
 
 #loader {
-  visibility: ahidden;
   position: absolute; 
   top: 0px;
   left: 9vw; 
 }
 
-#loader img {
-  width: 5vw;
-}
-
-@keyframes zoom {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 #settings { 
   margin: 20px;
   font-size: 20px;
+  border-radius: 6px;
+  border: 3px solid rgb(19, 94, 190);
+  box-shadow: 10px 10px 31px 0px rgba(0,0,0,0.3);
+  padding: 3vw;
 }
-input {
-
+#settings input {
+  font-size: 16px;
 }
-button {
+#settings button {
   border: 2px solid rgb(19, 94, 190);
   background-color: rgb(75, 133, 241);
   font-weight: 700;
   color: white;
+  padding: 5px 20px;
+  margin: 10px;
 }

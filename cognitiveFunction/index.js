@@ -30,8 +30,10 @@ module.exports = function (context, blobTrigger) {
       context.log("### That looks a bit like: "+respJson.description.captions[0].text);
       context.log("### Tags: "+JSON.stringify(respJson.tags));
 
-      // Add extra property srcUrl used by viewer app
+      // Mutate the object and insert extra properties used by viewer app
       respJson.srcUrl = context.bindingData.uri;
+      respJson.timestamp = new Date().getTime();
+      respJson.dateTime = new Date().toISOString();
 
       // Saving result to blob is very easy with Functions, we just assign the output variable
       context.bindings.outputBlob = JSON.stringify(respJson);

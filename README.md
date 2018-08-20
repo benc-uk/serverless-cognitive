@@ -7,7 +7,7 @@ The system consists of four main parts:
 - Camera web app
 - Two Azure Functions 
 - Computer Vision Cognitive Service
-- Viewer web app
+- Viewer JavaScript webapp, written in Vue.js
 
 
 # Architecture
@@ -91,3 +91,13 @@ All these steps use the Azure Portal, and assume you already have an Azure subsc
 If you want to host the viewer yourself in Azure, you can:
 - Upload the viewer folder of this repo to blob storage give the container anonymous access and load the pages using the blob endpoint URL, e.g. https://mystoreaccount.blob.core.windows.net/viewer/index.html
 - Create an Azure App Service web app and upload the contents of the viewer folder to the root of your web app
+
+
+# Design Notes
+Being a demo app, certain design choices were made that cut corners in order to simplify things:
+- Using Azure Functions to return HTML pages is generally not a recommended use case, as there are better ways to achieve that in Azure (Web Apps, Storage Static Sites etc)
+- Storing JSON in blobs isn't optimal, and something such as Table storage or even Cosmos DB represents a better fit. However the advantage of blobs is the option of anonymous access which simplifies viewing the results
+
+
+# Change Log
+- **Aug 2018:** Complete re-design. Functions rewritten in Node.js for use with Functions v2. Viewer app rewritten in Vue.js.
