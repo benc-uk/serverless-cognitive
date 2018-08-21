@@ -11,7 +11,7 @@ The system consists of four main parts:
 
 
 # Architecture
-![diagram of architecture](diagram.png){: .framed}
+![diagram of architecture](docs/diagram.png){: .framed}
 
 
 ## Application Flow 
@@ -26,14 +26,14 @@ The system consists of four main parts:
 Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
 ## Example (Viewer Results Webapp)
-![demo](demo.png){: .framed}
+![demo](docs/demo.png){: .framed}
 
 
 # Deployment & Setup
 The system requires a single Function App, storage account and Cognitive Services account. Using a consumption plan for the Function App means the costs for deploying the system are extremely small.
 
 ## Deployment Script 
-A bash script (`deploy.sh`) for automated deployment is provided, which will create everything and deploy all the Functions code. The default resource group is called ****Demo.ServerlessVision**** and deploys to **North Europe**, you can modify the script to change these defaults.  
+A bash script `deploy.sh` for fully automated deployment is provided in the **etc** directory. This script will create everything and deploy all the Functions code. The default resource group is called ****Demo.ServerlessVision**** and deploys to **North Europe**, you can modify the script to change these defaults.  
 
 To run the script you will need the Azure CLI installed and configured and either run the script locally under WSL bash or simply use the Azure Cloud Shell
 

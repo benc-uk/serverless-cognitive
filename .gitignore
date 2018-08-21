@@ -24,3 +24,5 @@ local.settings.json
 
 **/node_modules
 local.settings.json
+**/.terraform
+*.tfstate
