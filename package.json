@@ -2,9 +2,7 @@
   "name": "serverless-cognitive-demo",
   "version": "1.0.0",
   "description": "Computer vision AI demo using Azure Functions and Cognitive Services",
-  "dependencies": {
-    "request": "^2.88.0"
-  },
+  "dependencies": {},
   "author": "Ben Coleman",
   "license": "MIT",
   "repository": {

@@ -4,50 +4,43 @@
 // Ben Coleman, Aug 2018
 //
 
+const http = require('./simple-http.js');
+
 const VISION_API_KEY = process.env.VISION_API_KEY;
 const VISION_API_REGION = process.env.VISION_API_REGION || "westeurope"
-const VISION_API_ENDPOINT = `https://${VISION_API_REGION}.api.cognitive.microsoft.com/vision/v1.0/analyze`;
-const request = require('request');
+const VISION_API_ENDPOINT = `https://${VISION_API_REGION}.api.cognitive.microsoft.com/vision/v1.0/analyze?visualFeatures=Categories,Tags,Description,Faces,ImageType,Color&details=Celebrities`;
 
 module.exports = function (context, blobTrigger) {
   context.log("### New photo uploaded, starting analysis...");
 
-  // Create JSON request object, it's simply the URL of the image we want to analyse
-  let cognitiveRequest = {
-    url: VISION_API_ENDPOINT + '?visualFeatures=Categories,Tags,Description,Faces,ImageType,Color&details=Celebrities',
-    headers: {'content-type': 'application/json', 'Ocp-Apim-Subscription-Key': VISION_API_KEY},
-    body: JSON.stringify({
-      url: context.bindingData.uri
-    })
-  };
+  // Call cognitive service vision API
+  // Post simple JSON object with the url of the image and put the key in the headers
+  http.postJSON(
+    VISION_API_ENDPOINT, 
+    { url: context.bindingData.uri }, 
+    { 'Ocp-Apim-Subscription-Key': VISION_API_KEY }
+  )
+  .then(resp => {
+    context.log("### Cognitive API called successfully");
+    context.log("### That looks a bit like: "+resp.description.captions[0].text);
+    context.log("### Tags: "+JSON.stringify(resp.tags));
 
-  // Send request to cognitive API
-  request.post(cognitiveRequest, (err, resp, body) => {
-    if(!err && resp.statusCode == 200) {
-      context.log("### Cognitive API called successfully");
+    // We want to inject the original image URL into our result object
+    // Mutate the object and insert extra properties used by viewer app
+    resp.srcUrl = context.bindingData.uri;
+    resp.timestamp = new Date().getTime();
+    resp.dateTime = new Date().toISOString();
 
-      // We want to inject the original image URL into our result object
-      // So we have to parse, modify and then re-stringify
-      respJson = JSON.parse(body);
-      context.log("### That looks a bit like: "+respJson.description.captions[0].text);
-      context.log("### Tags: "+JSON.stringify(respJson.tags));
-
-      // Mutate the object and insert extra properties used by viewer app
-      respJson.srcUrl = context.bindingData.uri;
-      respJson.timestamp = new Date().getTime();
-      respJson.dateTime = new Date().toISOString();
-
-      // Saving result to blob is very easy with Functions, we just assign the output variable
-      context.bindings.outputBlob = JSON.stringify(respJson);
-      context.done();
-      context.log("### Function completed");
-    } else {
-      // Error and general badness happened
-      context.log("### Error! Cognitive API call failed!");
-      context.log(err || "");
-      context.log(body || "");
-      context.done();
-    }
-  });
-
+    // Saving result to blob is very easy with Functions, we just assign the output variable
+    // We need to convert the resp back to JSON string
+    context.bindings.outputBlob = JSON.stringify(resp);
+    context.done();
+    context.log("### Function completed");
+  })
+  .catch(err => {
+    // Error and general badness happened
+    context.log("### Error! Cognitive API call failed!");
+    context.log(err.message || "");
+    context.done();    
+  })
 };
