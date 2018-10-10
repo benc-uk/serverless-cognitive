@@ -29,7 +29,7 @@ apiKey=`az cognitiveservices account keys list -n "visionapi" -g $resGroup --que
 echo "### Creating Function App"
 az functionapp create -g $resGroup -c $location -n $functionName -s $storeAcct --os-type Windows --runtime node --deployment-source-url "https://github.com/benc-uk/serverless-cognitive.git"
 echo "### Configuring Function App"
-az functionapp config appsettings set -g $resGroup -n $functionName --settings VISION_API_KEY=$apiKey VISION_API_REGION=$location
+az functionapp config appsettings set -g $resGroup -n $functionName --settings VISION_API_KEY=$apiKey VISION_API_REGION=$location FUNCTIONS_WORKER_RUNTIME=node WEBSITE_NODE_DEFAULT_VERSION=8.11.1
 
 echo ""
 echo "##################################################################################"
