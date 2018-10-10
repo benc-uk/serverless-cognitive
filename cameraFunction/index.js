@@ -1,10 +1,9 @@
 //
-// Multi purpose Function.
+// Multi purpose "camera" Function.
 // - Serves the camera single page "mobile app" (static HTML file)
-// - Receives images from the camera app and saves them to Azure blob storage 
+// - Receives images from the camera app and saves them to blob storage 
 // Ben Coleman, Aug 2018
 //
-
 module.exports = function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
 

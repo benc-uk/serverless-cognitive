@@ -1,9 +1,7 @@
-
 //
 // Photo analysis function using Azure Cognitive Service Vision API
 // Ben Coleman, Aug 2018
 //
-
 const http = require('./simple-http.js');
 
 const VISION_API_KEY = process.env.VISION_API_KEY;

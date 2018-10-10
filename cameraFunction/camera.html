@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Serverless Demo Cam</title>
-  <!-- 
-    Serverless Demo Camera 
-    Ben Coleman, Aug 2018
-  -->
   <link rel="shortcut icon" href="http://simpleicon.com/wp-content/uploads/camera.png" type="image/x-icon">
   <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -51,8 +48,8 @@
   // Config here
   const POST_ENDPOINT = "/api/cameraFunction";
   //const POST_ENDPOINT = "https://functions-app-demo.azurewebsites.net/api/cameraFunction";
-  const MAX_SIZE = 3000;
-  const JPEG_QUAL = 0.9;
+  const MAX_SIZE = 1600;
+  const JPEG_QUAL = 0.7;
 
   $('#file').on('change', function (e) {
     var file = e.target.files[0];
@@ -69,6 +66,7 @@
   function processFile(file) {
 
     $("#msg").html('Uploading please wait...');
+    $("#msg").show();
 
     // Load the image
     var reader = new FileReader();
@@ -82,13 +80,13 @@
         var height = image.height
         if (width > height) {
             if (width > MAX_SIZE) {
-                height *= MAX_SIZE / width;
-                width = MAX_SIZE;
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
             }
         } else {
             if (height > MAX_SIZE) {
-                width *= MAX_SIZE / height;
-                height = MAX_SIZE;
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
             }
         }
         // Draw resized into canvas
