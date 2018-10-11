@@ -1,7 +1,7 @@
 # Overview
-This guide will step you through deploying a multi part application which demonstrates using serverless compute with Azure Functions combined with the pre-built machine learning models of Cognitive Services 
+This guide will step you through deploying a multi part application which demonstrates using the serverless compute of Azure Functions combined with the pre-built machine learning models of Azure Cognitive Services 
 
-With this application users can take photos using their phone, these photos are analysed using computer vision. The results have a description of the image, people's faces and also a set of tags. The demo app stores this information and the results are dynamically updated & displayed on a web page
+With this application users can take photos using their phone, and have these photos  analysed using computer vision. The results have a description of the image, people's faces and also a set of tags. The demo app stores this information and the results are dynamically updated & displayed on a web page
 
 The system consists of four main parts:
 - Camera web app
@@ -22,8 +22,7 @@ The system consists of four main parts:
 3. Second Azure Function is triggered on a new blob arriving at *photo-in* 
 4. Function sends image to Cognitive Service API (REST call) and gets the JSON result
 5. Result is stored in *photo-out* container as a blob of JSON
-6. Static HTML5 viewing page polls *photo-out* for new blobs and updates page dynamically by fetching and reading the JSON  
-Viewing page renders details as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
+6. Static HTML/Javascript viewer 'app' polls *photo-out* for new blobs and updates page dynamically by fetching and reading the JSON. Details are shown as overlays on the images, such as the caption, tags and location of faces (using HTML5 Canvas API)
 
 ## Example (Viewer Results Webapp)
 ![demo](docs/demo.png){: .framed}
@@ -37,7 +36,7 @@ A bash script `deploy.sh` for fully automated deployment is provided in the **et
 
 To run the script you will need the Azure CLI installed and configured and either run the script locally under WSL bash or simply use the Azure Cloud Shell
 
-- **Step 1** Go to shell.azure.com and login
+- **Step 1** Go to [shell.azure.com](shell.azure.com) and login
 - **Step 2** Run `curl -s https://raw.githubusercontent.com/benc-uk/serverless-cognitive/master/etc/deploy.sh | bash`
 
 ## Manual Deployment
@@ -45,10 +44,11 @@ All these steps use the Azure Portal, and assume you already have an Azure subsc
 
 ### 1. Deploy a new Azure Function App using the Portal 
 - Click; *New ➔ Compute ➔ Function App*
- - Pick any unique name for your app
+- Pick any unique name for your app
 - Pick Windows as the OS
 - Opt to create a new resource group, give it any name that you wish
-- For the *Hosting Plan* Select "Consumption Plan"
+- For the *Hosting Plan* select "Consumption Plan"
+- For the *Runtime Stack* select "JavaScript"
 - Opt to create a new storage account, and make a note of the name
 - Turn off Application Insights
 
